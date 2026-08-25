@@ -103,6 +103,7 @@ figcaption{margin-top:12px; font-size:13px; color:var(--text-muted); line-height
 .callout{fill:var(--text-primary); font-size:13px; font-weight:620}
 .value{fill:var(--text-primary); font-size:13.5px; font-weight:600; font-variant-numeric:tabular-nums}
 .bar-label{fill:#fff; font-size:12px; font-weight:620; text-anchor:middle}
+.bar-title{fill:var(--text-secondary); font-size:13px; font-weight:600}
 .dot{opacity:0; transition:opacity .12s}
 .pt:hover .dot{opacity:1}
 .pt{cursor:crosshair}
@@ -373,45 +374,45 @@ footer a{color:var(--text-secondary)}
       <h4>Lifecycle segment mix, Top 40 songs</h4>
       <p class="fsub">Share of songs by era</p>
       <div class="keys"><span class="key"><i style="background:var(--series-1)"></i>Spike</span><span class="key"><i style="background:var(--series-2)"></i>Instant Standard</span><span class="key"><i style="background:var(--series-3)"></i>Slow Burn</span><span class="key"><i style="background:var(--series-4)"></i>Grinder</span></div>
-      <svg viewBox="0 0 720 350" class="chart" role="img" aria-label="Lifecycle segment mix by era">
-<text x="156" y="37.0" class="axis-y">Physical / Airplay (pre-1991)</text>
-<rect x="168.0" y="10" width="0.5" height="46" rx="3" fill="var(--series-1)"/>
-<rect x="170.5" y="10" width="75.9" height="46" rx="3" fill="var(--series-3)"/>
-<text x="208.4" y="37.0" class="bar-label">15%</text>
-<rect x="248.4" y="10" width="449.6" height="46" rx="3" fill="var(--series-4)"/>
-<text x="473.2" y="37.0" class="bar-label">85%</text>
-<text x="156" y="99.0" class="axis-y">Soundscan CD Era (1991-2004)</text>
-<rect x="168.0" y="72" width="11.4" height="46" rx="3" fill="var(--series-1)"/>
-<rect x="181.4" y="72" width="8.5" height="46" rx="3" fill="var(--series-2)"/>
-<rect x="192.0" y="72" width="381.5" height="46" rx="3" fill="var(--series-3)"/>
-<text x="382.7" y="99.0" class="bar-label">72%</text>
-<rect x="575.4" y="72" width="122.6" height="46" rx="3" fill="var(--series-4)"/>
-<text x="636.7" y="99.0" class="bar-label">23%</text>
-<text x="156" y="161.0" class="axis-y">Download &amp; Early Streaming (2005-2013)</text>
-<rect x="168.0" y="134" width="90.1" height="46" rx="3" fill="var(--series-1)"/>
-<text x="213.0" y="161.0" class="bar-label">17%</text>
-<rect x="260.1" y="134" width="35.5" height="46" rx="3" fill="var(--series-2)"/>
-<text x="277.9" y="161.0" class="bar-label">7%</text>
-<rect x="297.6" y="134" width="331.7" height="46" rx="3" fill="var(--series-3)"/>
-<text x="463.5" y="161.0" class="bar-label">63%</text>
-<rect x="631.3" y="134" width="66.7" height="46" rx="3" fill="var(--series-4)"/>
-<text x="664.6" y="161.0" class="bar-label">13%</text>
-<text x="156" y="223.0" class="axis-y">Streaming Majority (2014-2017)</text>
-<rect x="168.0" y="196" width="99.8" height="46" rx="3" fill="var(--series-1)"/>
-<text x="217.9" y="223.0" class="bar-label">19%</text>
-<rect x="269.8" y="196" width="26.4" height="46" rx="3" fill="var(--series-2)"/>
-<rect x="298.2" y="196" width="354.8" height="46" rx="3" fill="var(--series-3)"/>
-<text x="475.7" y="223.0" class="bar-label">67%</text>
-<rect x="655.1" y="196" width="42.9" height="46" rx="3" fill="var(--series-4)"/>
-<text x="676.5" y="223.0" class="bar-label">8%</text>
-<text x="156" y="285.0" class="axis-y">Algorithmic / Social Era (2018-present)</text>
-<rect x="168.0" y="258" width="293.8" height="46" rx="3" fill="var(--series-1)"/>
-<text x="314.9" y="285.0" class="bar-label">56%</text>
-<rect x="463.8" y="258" width="62.3" height="46" rx="3" fill="var(--series-2)"/>
-<text x="494.9" y="285.0" class="bar-label">12%</text>
-<rect x="528.1" y="258" width="138.3" height="46" rx="3" fill="var(--series-3)"/>
-<text x="597.2" y="285.0" class="bar-label">26%</text>
-<rect x="668.4" y="258" width="29.6" height="46" rx="3" fill="var(--series-4)"/>
+      <svg viewBox="0 0 720 420" class="chart" role="img" aria-label="Lifecycle segment mix by era">
+<text x="0" y="13" class="bar-title">Physical / Airplay (pre-1991)</text>
+<rect x="0.0" y="20" width="1.3" height="38" rx="3" fill="var(--series-1)"><title>Spike: 0.5%</title></rect>
+<rect x="3.3" y="20" width="103.4" height="38" rx="3" fill="var(--series-3)"><title>Slow Burn: 14.6%</title></rect>
+<text x="55.1" y="43.5" class="bar-label">15%</text>
+<rect x="108.8" y="20" width="609.2" height="38" rx="3" fill="var(--series-4)"><title>Grinder: 84.9%</title></rect>
+<text x="413.4" y="43.5" class="bar-label">85%</text>
+<text x="0" y="97" class="bar-title">Soundscan CD Era (1991-2004)</text>
+<rect x="0.0" y="104" width="16.2" height="38" rx="3" fill="var(--series-1)"><title>Spike: 2.5%</title></rect>
+<rect x="18.2" y="104" width="12.3" height="38" rx="3" fill="var(--series-2)"><title>Instant Standard: 2.0%</title></rect>
+<rect x="32.4" y="104" width="517.0" height="38" rx="3" fill="var(--series-3)"><title>Slow Burn: 72.1%</title></rect>
+<text x="290.9" y="127.5" class="bar-label">72%</text>
+<rect x="551.4" y="104" width="166.6" height="38" rx="3" fill="var(--series-4)"><title>Grinder: 23.4%</title></rect>
+<text x="634.7" y="127.5" class="bar-label">23%</text>
+<text x="0" y="181" class="bar-title">Download &amp; Early Streaming (2005-2013)</text>
+<rect x="0.0" y="188" width="122.6" height="38" rx="3" fill="var(--series-1)"><title>Spike: 17.3%</title></rect>
+<text x="61.3" y="211.5" class="bar-label">17%</text>
+<rect x="124.6" y="188" width="48.8" height="38" rx="3" fill="var(--series-2)"><title>Instant Standard: 7.1%</title></rect>
+<text x="149.0" y="211.5" class="bar-label">7%</text>
+<rect x="175.4" y="188" width="449.6" height="38" rx="3" fill="var(--series-3)"><title>Slow Burn: 62.7%</title></rect>
+<text x="400.2" y="211.5" class="bar-label">63%</text>
+<rect x="627.0" y="188" width="91.0" height="38" rx="3" fill="var(--series-4)"><title>Grinder: 12.9%</title></rect>
+<text x="672.5" y="211.5" class="bar-label">13%</text>
+<text x="0" y="265" class="bar-title">Streaming Majority (2014-2017)</text>
+<rect x="0.0" y="272" width="135.8" height="38" rx="3" fill="var(--series-1)"><title>Spike: 19.1%</title></rect>
+<text x="67.9" y="295.5" class="bar-label">19%</text>
+<rect x="137.8" y="272" width="36.5" height="38" rx="3" fill="var(--series-2)"><title>Instant Standard: 5.3%</title></rect>
+<rect x="176.3" y="272" width="480.9" height="38" rx="3" fill="var(--series-3)"><title>Slow Burn: 67.1%</title></rect>
+<text x="416.7" y="295.5" class="bar-label">67%</text>
+<rect x="659.2" y="272" width="58.8" height="38" rx="3" fill="var(--series-4)"><title>Grinder: 8.4%</title></rect>
+<text x="688.6" y="295.5" class="bar-label">8%</text>
+<text x="0" y="349" class="bar-title">Algorithmic / Social Era (2018-present)</text>
+<rect x="0.0" y="356" width="398.3" height="38" rx="3" fill="var(--series-1)"><title>Spike: 55.6%</title></rect>
+<text x="199.1" y="379.5" class="bar-label">56%</text>
+<rect x="400.3" y="356" width="85.0" height="38" rx="3" fill="var(--series-2)"><title>Instant Standard: 12.1%</title></rect>
+<text x="442.8" y="379.5" class="bar-label">12%</text>
+<rect x="487.3" y="356" width="187.9" height="38" rx="3" fill="var(--series-3)"><title>Slow Burn: 26.4%</title></rect>
+<text x="581.3" y="379.5" class="bar-label">26%</text>
+<rect x="677.2" y="356" width="40.8" height="38" rx="3" fill="var(--series-4)"><title>Grinder: 5.9%</title></rect>
 </svg>
       <figcaption>Honest nuance: <em>Instant Standards</em> — songs that launch big
         <em>and</em> hold — more than doubled. The market has become <strong>bimodal</strong>.

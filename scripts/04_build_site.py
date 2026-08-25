@@ -90,28 +90,35 @@ def line_chart(points, y_max, y_label, unit="%", accent="--series-1",
     return "\n".join(parts)
 
 
-def stacked_bars(eras, segments, matrix):
-    """100% stacked horizontal bars, one per era, with direct % labels."""
+def stacked_bars(eras, segments, matrix, short):
+    """100% stacked horizontal bars, one per era, with direct % labels.
+
+    Era names are long ("Download & Early Streaming (2005-2013)"), so the label
+    sits ABOVE each bar rather than to its left - a left gutter wide enough for
+    them would push the labels off the canvas.
+    """
     W = 720
-    row_h, gap, ML = 46, 16, 168
-    H = len(eras) * (row_h + gap) + 40
-    bw = W - ML - 20
+    label_h, row_h, gap = 20, 38, 26
+    block = label_h + row_h + gap
+    H = len(eras) * block
     parts = [f'<svg viewBox="0 0 {W} {H}" class="chart" role="img" '
              f'aria-label="Lifecycle segment mix by era">']
     for i, era in enumerate(eras):
-        y = i * (row_h + gap) + 10
-        parts.append(f'<text x="{ML-12}" y="{y+row_h/2+4}" class="axis-y">{esc(era)}</text>')
-        x = ML
+        top = i * block
+        parts.append(f'<text x="0" y="{top+13}" class="bar-title">{esc(era)}</text>')
+        y = top + label_h
+        x = 0.0
         for j, seg in enumerate(segments):
             share = matrix[era][seg]
-            w = share * bw
+            w = share * W
             if w <= 0:
                 continue
             # 2px surface gap between adjacent segments
             parts.append(f'<rect x="{x:.1f}" y="{y}" width="{max(w-2,0.5):.1f}" '
-                         f'height="{row_h}" rx="3" fill="var({PALETTE[j]})"/>')
+                         f'height="{row_h}" rx="3" fill="var({PALETTE[j]})">'
+                         f'<title>{esc(short[seg])}: {share*100:.1f}%</title></rect>')
             if share >= 0.07:   # direct label only where it fits
-                parts.append(f'<text x="{x+w/2-1:.1f}" y="{y+row_h/2+4}" '
+                parts.append(f'<text x="{x+(w-2)/2:.1f}" y="{y+row_h/2+4.5}" '
                              f'class="bar-label">{share*100:.0f}%</text>')
             x += w
     parts.append("</svg>")
@@ -187,7 +194,7 @@ def main():
             breakthrough, 50, "First-time Top 10 artists", unit="",
             accent="--series-7", fill=False, highlight=(2025, 14, "2025: 14")),
         "segments": stacked_bars(
-            [era_labels[e] for e in eras], seg_order, matrix_lbl),
+            [era_labels[e] for e in eras], seg_order, matrix_lbl, short),
         "quintiles": quintile_bars([
             ("1 — holding peak", "0.07–0.74", "25 wks", 48),
             ("2", "0.74–1.08", "25 wks", 45),
