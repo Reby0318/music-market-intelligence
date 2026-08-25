@@ -1,0 +1,11 @@
+BILLBOARD HOT 100 - CLEANING LOG
+============================================
+Rows read from raw file      : 355,100
+Dropped - unparseable date   : 0
+Dropped - out-of-range values: 0
+Dropped - exact duplicates   : 13
+"NA" last_week set to blank  : 32,460
+Rows written to clean file   : 355,087
+Date range                   : 1958-08-04 to 2026-08-22
+Unique songs                 : 32,688
+Unique performers            : 11,287

@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signal vs. Noise — Quantifying the Discovery Bottleneck in the Streaming Era</title>
+<meta name="description" content="A business-intelligence analysis of 68 years of Billboard Hot 100 data, measuring how the music industry's demand signal broke — and what to measure instead.">
+<style>
+:root{
+  color-scheme: light;
+  --surface-0:#f7f6f3; --surface-1:#fcfcfb; --surface-2:#efeee9;
+  --border:#dedcd4; --border-strong:#c6c3b8;
+  --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#78766f;
+  --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a;
+  --series-4:#eda100; --series-7:#4a3aa7;
+  --accent:#2a78d6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --surface-0:#141413; --surface-1:#1a1a19; --surface-2:#232322;
+    --border:#33332f; --border-strong:#4a4a45;
+    --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#96958b;
+    --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70;
+    --series-4:#c98500; --series-7:#9085e9;
+    --accent:#3987e5;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --surface-0:#141413; --surface-1:#1a1a19; --surface-2:#232322;
+  --border:#33332f; --border-strong:#4a4a45;
+  --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#96958b;
+  --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70;
+  --series-4:#c98500; --series-7:#9085e9;
+  --accent:#3987e5;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--surface-0); color:var(--text-primary);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:860px; margin:0 auto; padding:0 24px}
+a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent}
+a:hover{border-bottom-color:currentColor}
+
+/* ---------- header ---------- */
+header{border-bottom:1px solid var(--border); background:var(--surface-1)}
+.nav{display:flex; align-items:center; justify-content:space-between; gap:16px;
+     padding:14px 0; font-size:14px}
+.nav .brand{font-weight:650; letter-spacing:-.01em}
+.nav nav{display:flex; gap:20px; flex-wrap:wrap}
+.nav nav a{color:var(--text-secondary)}
+
+.hero{padding:72px 0 56px; border-bottom:1px solid var(--border); background:var(--surface-1)}
+.eyebrow{font-size:13px; text-transform:uppercase; letter-spacing:.09em;
+         color:var(--text-muted); font-weight:600; margin-bottom:18px}
+h1{font-size:clamp(34px,5.4vw,54px); line-height:1.08; letter-spacing:-.028em;
+   margin:0 0 20px; font-weight:680}
+.sub{font-size:20px; line-height:1.55; color:var(--text-secondary); max-width:660px; margin:0 0 32px}
+.meta{display:flex; gap:28px; flex-wrap:wrap; font-size:14px; color:var(--text-muted);
+      padding-top:24px; border-top:1px solid var(--border)}
+.meta b{color:var(--text-primary); font-weight:600; display:block; font-size:15px}
+.cta{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:30px}
+.btn{display:inline-block; padding:11px 20px; border-radius:8px; font-size:15px;
+     font-weight:550; border:1px solid var(--border-strong); color:var(--text-primary)}
+.btn:hover{border-color:var(--accent); border-bottom-color:var(--accent)}
+.btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
+.btn.primary:hover{opacity:.9}
+
+/* ---------- sections ---------- */
+section{padding:64px 0; border-bottom:1px solid var(--border)}
+h2{font-size:clamp(26px,3.4vw,34px); letter-spacing:-.022em; line-height:1.2;
+   margin:0 0 8px; font-weight:660}
+h3{font-size:20px; letter-spacing:-.012em; margin:40px 0 6px; font-weight:620}
+.lede{color:var(--text-secondary); font-size:18px; margin:0 0 34px; max-width:680px}
+p{margin:0 0 18px; max-width:680px}
+.small{font-size:14px; color:var(--text-muted); max-width:680px}
+
+/* ---------- stats ---------- */
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1px;
+       background:var(--border); border:1px solid var(--border); border-radius:10px;
+       overflow:hidden; margin:32px 0}
+.stat{background:var(--surface-1); padding:22px}
+.stat .n{font-size:32px; font-weight:660; letter-spacing:-.03em; line-height:1.1;
+         font-variant-numeric:tabular-nums}
+.stat .l{font-size:13.5px; color:var(--text-secondary); margin-top:8px; line-height:1.45}
+.stat .was{font-size:12.5px; color:var(--text-muted); margin-top:6px}
+
+/* ---------- figures ---------- */
+figure{margin:34px 0; background:var(--surface-1); border:1px solid var(--border);
+       border-radius:10px; padding:22px 20px 16px}
+figure h4{margin:0 0 4px; font-size:16.5px; font-weight:620; letter-spacing:-.01em}
+figure .fsub{margin:0 0 16px; font-size:14px; color:var(--text-secondary)}
+figcaption{margin-top:12px; font-size:13px; color:var(--text-muted); line-height:1.5}
+.chart{width:100%; height:auto; display:block; overflow:visible}
+.grid{stroke:var(--border); stroke-width:1}
+.axis-y{fill:var(--text-muted); font-size:11.5px; text-anchor:end; font-variant-numeric:tabular-nums}
+.axis-x{fill:var(--text-muted); font-size:11.5px; text-anchor:middle; font-variant-numeric:tabular-nums}
+.callout{fill:var(--text-primary); font-size:13px; font-weight:620}
+.value{fill:var(--text-primary); font-size:13.5px; font-weight:600; font-variant-numeric:tabular-nums}
+.bar-label{fill:#fff; font-size:12px; font-weight:620; text-anchor:middle}
+.dot{opacity:0; transition:opacity .12s}
+.pt:hover .dot{opacity:1}
+.pt{cursor:crosshair}
+.keys{display:flex; gap:18px; flex-wrap:wrap; margin:14px 0 2px; font-size:13px;
+      color:var(--text-secondary)}
+.key{display:flex; align-items:center; gap:7px}
+.key i{width:11px; height:11px; border-radius:3px; display:inline-block}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto; margin:26px 0; border:1px solid var(--border); border-radius:10px}
+table{border-collapse:collapse; width:100%; font-size:14.5px; background:var(--surface-1)}
+th,td{padding:11px 14px; text-align:left; border-bottom:1px solid var(--border);
+      white-space:nowrap}
+th{background:var(--surface-2); font-weight:620; font-size:13px;
+   text-transform:uppercase; letter-spacing:.045em; color:var(--text-secondary)}
+tbody tr:last-child td{border-bottom:none}
+td.num{text-align:right; font-variant-numeric:tabular-nums}
+
+/* ---------- callout box ---------- */
+.box{background:var(--surface-1); border:1px solid var(--border);
+     border-left:3px solid var(--accent); border-radius:8px; padding:20px 22px; margin:30px 0}
+.box p{margin:0; max-width:none}
+.box p+p{margin-top:12px}
+
+ul{max-width:680px; padding-left:22px}
+li{margin-bottom:10px}
+li::marker{color:var(--text-muted)}
+
+footer{padding:48px 0 64px; font-size:14px; color:var(--text-muted)}
+footer a{color:var(--text-secondary)}
+@media (max-width:640px){
+  body{font-size:16px}
+  section{padding:48px 0}
+  .meta{gap:18px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <span class="brand">Signal vs. Noise</span>
+    <nav>
+      <a href="#problem">The problem</a>
+      <a href="#findings">Findings</a>
+      <a href="#rule">The decision rule</a>
+      <a href="#method">Method</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Music Industry Business Intelligence · August 2026</div>
+    <h1>The music industry can no longer tell a hit from a spike.</h1>
+    <p class="sub">Sixty-eight years of Billboard Hot 100 data show that the signal the
+      industry relies on to decide what to sign, playlist and pay for has quietly stopped
+      working — and that a far better one is available eight weeks after release.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/USERNAME/music-market-intelligence/blob/main/paper/Signal-vs-Noise-Paper.md">Read the paper</a>
+      <a class="btn" href="YOUR_TABLEAU_URL">Tableau dashboards</a>
+      <a class="btn" href="https://github.com/USERNAME/music-market-intelligence">Code &amp; data</a>
+    </div>
+    <div class="meta">
+      <div><b>355,087</b> song-weeks analysed</div>
+      <div><b>1958–2026</b> full chart history</div>
+      <div><b>32,688</b> songs · 8,837 artists</div>
+      <div><b>Python · Excel · Tableau</b> free tools only</div>
+    </div>
+  </div>
+</div>
+
+<section id="problem">
+  <div class="wrap">
+    <h2>The problem worth solving</h2>
+    <p class="lede">The recorded music business is growing. The machinery it uses to
+      find and value music is not.</p>
+
+    <p>Global recorded music revenue grew <strong>6.4% to US$31.7 billion in 2025</strong> —
+      an eleventh consecutive year of growth, with 837 million paid subscriptions
+      (IFPI, 2026). Underneath that healthy headline, four things happened at once.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="n">106,000</div>
+        <div class="l">new tracks delivered to streaming services every day</div>
+        <div class="was">Luminate, 2025 year-end</div></div>
+      <div class="stat"><div class="n">&gt;50%</div>
+        <div class="l">of daily uploads to Deezer are now fully AI-generated</div>
+        <div class="was">~90,000 tracks/day, July 2026</div></div>
+      <div class="stat"><div class="n">≈$2bn</div>
+        <div class="l">drained from global royalties each year by streaming fraud</div>
+        <div class="was">IFPI estimate</div></div>
+      <div class="stat"><div class="n">120.5m</div>
+        <div class="l">tracks earned ten streams or fewer in all of 2025</div>
+        <div class="was">≈48% of the entire catalog</div></div>
+    </div>
+
+    <p>Supply has become infinite and increasingly synthetic. Attention has not.
+      And most tellingly, streaming of <em>current</em> music — releases 18 months old or
+      newer — <strong>fell 1.6% in 2025</strong> even as total streaming grew 9.6%.
+      Growth is coming from catalog, not from new music.</p>
+
+    <div class="box">
+      <p><strong>The industry's binding constraint has flipped from supply to verification.</strong></p>
+      <p>Music is no longer scarce. What is scarce is trustworthy evidence of durable
+        human demand — and signing, playlisting, marketing, royalty payment and AI catalog
+        licensing all depend on it.</p>
+    </div>
+
+    <p class="small">This is upstream of the fraud problem, the discovery problem, the
+      artist-development problem and the AI-valuation problem. Solve measurement and all
+      four become tractable. That is what this project attacks.</p>
+  </div>
+</section>
+
+<section id="findings">
+  <div class="wrap">
+    <h2>What 68 years of chart data show</h2>
+    <p class="lede">Stream counts are not comparable across decades — the units changed.
+      Chart rank is. It is the only complete, free, public record of ranked demand that
+      spans both the physical and the streaming era.</p>
+
+    <h3>1. Hits now arrive pre-peaked</h3>
+    <p>The share of Top 40 hits that reach their highest position in their very first
+      week rose from under 1% at the turn of the century to nearly three in four.
+      Release week is no longer the start of a story. It is the whole story.</p>
+    <figure>
+      <h4>Share of Top 40 hits peaking in week one</h4>
+      <p class="fsub">By debut year, 1990–2024</p>
+      {{debut_peak}}
+      <figcaption>A clear structural break at 2018. Hover any point for its value.
+        Years still in progress (2025–26) are excluded.</figcaption>
+    </figure>
+
+    <h3>2. Commercial life collapsed</h3>
+    <p>The median chart run for a Top 40 hit was <strong>20 weeks every single year from
+      1995 to 2017</strong> — through the CD boom, the Napster collapse, the iTunes era and
+      the arrival of streaming. Then it fell to seven weeks in six years.</p>
+    <figure>
+      <h4>Median chart run of a Top 40 hit</h4>
+      <p class="fsub">Weeks on chart, by debut year, 1990–2024</p>
+      {{half_life}}
+      <figcaption>Flat at 20 weeks for 23 consecutive years, then a 65% reduction.</figcaption>
+    </figure>
+
+    <h3>3. The developing hit has been hollowed out</h3>
+    <p>Placing every Top 40 song on speed-to-peak against longevity gives four segments.
+      The <strong>Slow Burn</strong> — a song that finds its audience over weeks and then
+      holds it — was the dominant form of hit for a quarter century. It is now a minority
+      case, displaced by the <strong>Spike</strong>.</p>
+    <figure>
+      <h4>Lifecycle segment mix, Top 40 songs</h4>
+      <p class="fsub">Share of songs by era</p>
+      <div class="keys">{{segment_legend}}</div>
+      {{segments}}
+      <figcaption>Honest nuance: <em>Instant Standards</em> — songs that launch big
+        <em>and</em> hold — more than doubled. The market has become <strong>bimodal</strong>.
+        What disappeared is the middle: the ordinary developing hit that used to be the
+        industry's training ground for building careers.</figcaption>
+    </figure>
+
+    <h3>4. Catalog is crowding out new music</h3>
+    <p>For four decades, songs left the chart and did not return. Since 2021, older music
+      has held 5–8% of the chart year-round. In December 2025,
+      <strong>21.2% of the chart was held by songs at least five years old</strong>.</p>
+    <figure>
+      <h4>Chart slots held by songs first charted 12+ months earlier</h4>
+      <p class="fsub">1990–2025</p>
+      {{crowding}}
+      <figcaption>Not a change in taste — a change in plumbing. On-demand access plus
+        algorithmic reinforcement lets proven catalog re-enter and hold, taking space new
+        releases used to occupy.</figcaption>
+    </figure>
+
+    <h3>5. Fewer artists are breaking through</h3>
+    <figure>
+      <h4>Artists reaching the Top 10 for the first time</h4>
+      <p class="fsub">Count per year, 1990–2025</p>
+      {{breakthrough}}
+      <figcaption>14 in 2025 — the lowest since 2010–11, against a 1960s baseline near 50.
+        Distinct #1 songs tell the same story: 10 in 2025, against 35 in 1975.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="rule">
+  <div class="wrap">
+    <h2>The metric the industry trusts most predicts least</h2>
+    <p class="lede">If demand is front-loaded, which early signal actually forecasts
+      whether a song becomes a durable asset?</p>
+
+    <p>Testing every Top 40 song that debuted between 2018 and 2024 and survived at least
+      eight weeks (n = 1,004), correlating chart position in each early week against
+      eventual total chart run. Rank is inverted, so a <em>negative</em> correlation is the
+      intuitive one: a better position predicts a longer run.</p>
+
+    <div class="tw"><table>
+      <thead><tr><th>Early signal</th><th>Correlation with total chart run</th></tr></thead>
+      <tbody>
+        <tr><td>Debut rank (week 1)</td><td class="num">+0.107</td></tr>
+        <tr><td>Rank at week 2</td><td class="num">+0.016</td></tr>
+        <tr><td>Rank at week 4</td><td class="num">−0.149</td></tr>
+        <tr><td>Rank at week 6</td><td class="num">−0.294</td></tr>
+        <tr><td><strong>Rank at week 8</strong></td><td class="num"><strong>−0.380</strong></td></tr>
+      </tbody>
+    </table></div>
+
+    <p><strong>Debut rank's correlation is not merely weak — it is positive.</strong> A
+      stronger debut is very slightly associated with a <em>shorter</em> life. Debut position
+      is close to noise. Week-8 position carries roughly three and a half times the
+      information, in the correct direction.</p>
+
+    <h3>The Week-8 Retention Ratio</h3>
+    <p>Define it as <strong>(rank at week 8) ÷ (best rank achieved in weeks 1–4)</strong>.
+      A ratio near 1.0 means a song is holding its peak; 5.0 means it has fallen to a fifth
+      of its early standing.</p>
+
+    <figure>
+      <h4>Probability of becoming a 26-week asset</h4>
+      <p class="fsub">By Week-8 Retention Ratio quintile · Top 40 debuts 2018–2024</p>
+      {{quintiles}}
+      <figcaption>A song in the top retention quintile is <strong>2.8× more likely</strong>
+        to become a durable asset than one in the bottom quintile — a decision-grade
+        separation available eight weeks after release.</figcaption>
+    </figure>
+
+    <div class="box">
+      <p><strong>Recommendation: move the A&amp;R and playlist decision gate from
+        release-week velocity to week-8 retention.</strong></p>
+      <p>This is a scheduling change, not a technology purchase. Every company in the chain
+        already holds the data required to run it.</p>
+    </div>
+
+    <h3>What each stakeholder should do</h3>
+    <ul>
+      <li><strong>Streaming platforms</strong> — make retention, not raw volume, the fraud
+        filter. A 1,000-stream threshold penalises the ~87% of legitimate tracks that fall
+        below it; retention <em>shape</em> is far harder to fake cheaply and does not tax
+        small real artists.</li>
+      <li><strong>Major labels</strong> — budget explicitly against the Spike. If 56% of
+        Top 40 songs now spike and only 12% launch big and hold, marketing plans that assume
+        a long tail are mispriced for most releases.</li>
+      <li><strong>Independent artists &amp; managers</strong> — stop concentrating budget in
+        week one, the least predictive part of the curve. Hold spend for weeks 4–12, where
+        the outcome is still visible and still changeable.</li>
+      <li><strong>Catalog &amp; AI licensing</strong> — with the Suno and Udio settlements
+        moving toward licensed models in 2026, value recordings on durability, not on
+        cumulative stream counts inflated by an era of fraud.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="method">
+  <div class="wrap">
+    <h2>Method, and what it cannot tell you</h2>
+
+    <p><strong>Data.</strong> The complete Billboard Hot 100 weekly archive — 355,100 raw
+      song-weeks, 4 Aug 1958 to 22 Aug 2026 — from a free public archive that needs no
+      login or API key and refreshes weekly. A three-script Python pipeline using
+      <strong>only the standard library</strong> downloads, cleans, validates and aggregates it.
+      Anyone can clone the repository and reproduce every number in under five minutes.</p>
+
+    <p><strong>Cleaning.</strong> 355,087 rows survive validation; 13 exact duplicates
+      removed, 32,460 Billboard <code>"NA"</code> placeholders converted to true blanks, ranks
+      and tenure range-checked, and a machine-written audit trail saved to
+      <code>cleaning_log.txt</code>.</p>
+
+    <div class="box">
+      <p><strong>One cleaning decision is worth stating, because getting it wrong silently
+        corrupts every artist-level number.</strong></p>
+      <p>Billboard packs all credits into one free-text field. Splitting it on
+        <code>&amp;</code> — the obvious approach — destroys real act names: Kool &amp; The
+        Gang becomes "Kool", Earth, Wind &amp; Fire becomes "Earth". The pipeline splits only
+        on explicit guest joiners. This bug was caught by inspecting the top of the artist
+        table, then fixed and documented rather than hidden.</p>
+    </div>
+
+    <p><strong>Right-censoring.</strong> Songs from the two most recent years have not
+      finished charting, which would bias their lifecycle metrics downward. Those years are
+      flagged in the data and <strong>every trend claim here stops at 2024</strong>.</p>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>The Hot 100 is a <strong>US chart</strong>. It says nothing about Latin America
+        (+17.1% in 2025), MENA or Africa — the fastest-growing markets in the world.</li>
+      <li><strong>Billboard changed its methodology</strong> during the study period
+        (streaming added 2007, video 2013, album-track rules revised ~2019–21). The 2018
+        break coincides with the algorithmic era but is not cleanly separable from
+        chart-policy change. The direction and magnitude are robust; the exact break year
+        is not attributable to consumer behaviour alone.</li>
+      <li><strong>Rank is relative, not absolute.</strong> It cannot measure the long tail —
+        which is exactly where the AI and fraud problems concentrate.</li>
+      <li>The week-8 analysis <strong>conditions on survival</strong>, so it describes songs
+        that lasted eight weeks, not all releases.</li>
+      <li>2025 partially reverses the trend, and that is <strong>unexplained</strong>. As a
+        censored cohort it may be an artefact; it may be a genuine turn. It should not be
+        read either way until 2027 data closes it.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Rebecca Wu</strong> — classically trained musician · Master of Music ·
+      MBA candidate. Working at the intersection of music, business and data.</p>
+    <p>
+      <a href="https://github.com/USERNAME/music-market-intelligence">Repository</a> ·
+      <a href="https://github.com/USERNAME/music-market-intelligence/blob/main/paper/Signal-vs-Noise-Paper.md">Full paper</a> ·
+      <a href="YOUR_TABLEAU_URL">Tableau Public</a>
+    </p>
+    <p class="small">Chart data from the public Billboard Hot 100 archive, used for
+      non-commercial research. Billboard is a trademark of Billboard Media, LLC, which is
+      not affiliated with this project. Industry figures from IFPI <em>Global Music Report
+      2026</em>, Luminate <em>2025 Year-End Report</em>, and Deezer's AI-upload disclosures —
+      all cited in the paper.</p>
+  </div>
+</footer>
+
+</body>
+</html>

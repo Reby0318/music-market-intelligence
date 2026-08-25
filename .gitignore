@@ -1,0 +1,25 @@
+# Raw source data - re-downloadable in one command:
+#   python3 scripts/01_download_data.py
+data/raw/*
+!data/raw/.gitkeep
+
+# Full cleaned song-week table (~56 MB, too large for Git).
+# Regenerate in ~20 seconds with: python3 scripts/02_clean_data.py
+data/processed/chart_weeks_clean.csv
+
+# Tableau working files
+*.twbx
+*.hyper
+*.tde
+
+# Excel / Word temp files
+~$*
+*.tmp
+
+# OS + editor noise
+.DS_Store
+Thumbs.db
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.venv/
