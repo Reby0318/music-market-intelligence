@@ -3,7 +3,7 @@
 
 A business-intelligence analysis of **68 years of Billboard Hot 100 data (355,087 song-weeks, 1958–2026)**, measuring how the music industry's demand signal broke — and proposing a better metric to replace it.
 
-**[Read the full paper →](paper/Signal-vs-Noise-Paper.md)** · **[Live project site →](https://USERNAME.github.io/music-market-intelligence/)** · **[Tableau dashboards →](YOUR_TABLEAU_URL)**
+**[Read the full paper →](paper/Signal-vs-Noise-Paper.md)** · **[Live project site →](https://Reby0318.github.io/music-market-intelligence/)** · **[Tableau dashboards →](YOUR_TABLEAU_URL)**
 
 ---
 

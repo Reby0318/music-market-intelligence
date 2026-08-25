@@ -3,7 +3,7 @@
 
 **Author:** Rebecca Wu
 **Date:** August 2026
-**Repository:** https://github.com/USERNAME/music-market-intelligence
+**Repository:** https://github.com/Reby0318/music-market-intelligence
 **Data:** Billboard Hot 100, 355,087 song-weeks, 4 Aug 1958 – 22 Aug 2026
 **Tools:** Python (standard library only), Microsoft Excel, Tableau Public
 
@@ -360,4 +360,4 @@ The scarce resource is no longer music. It is proof that anyone actually wants i
 
 ---
 
-*All figures derived from the Hot 100 in this paper are reproducible by running the three scripts in `/scripts` against the public source data. Analysis code and cleaned datasets: `github.com/USERNAME/music-market-intelligence`.*
+*All figures derived from the Hot 100 in this paper are reproducible by running the three scripts in `/scripts` against the public source data. Analysis code and cleaned datasets: `github.com/Reby0318/music-market-intelligence`.*

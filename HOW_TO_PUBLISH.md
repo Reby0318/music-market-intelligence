@@ -27,7 +27,7 @@ Budget about an hour end to end.
 From this folder:
 ```bash
 cd ~/Projects/music-market-intelligence
-git remote add origin https://github.com/YOUR_USERNAME/music-market-intelligence.git
+git remote add origin https://github.com/Reby0318/music-market-intelligence.git
 git branch -M main
 git push -u origin main
 ```
@@ -55,7 +55,7 @@ This publishes `docs/index.html` as a real website at no cost.
 3. **Branch:** `main`, **Folder:** `/docs`
 4. Click **Save**
 5. Wait 1–2 minutes, then visit:
-   **`https://YOUR_USERNAME.github.io/music-market-intelligence/`**
+   **`https://Reby0318.github.io/music-market-intelligence/`**
 
 That URL is what you put on your résumé and in applications.
 
