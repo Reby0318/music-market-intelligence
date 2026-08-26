@@ -140,7 +140,7 @@ Industry context is drawn from IFPI's *Global Music Report 2026*, Luminate's *20
 
 **Rebecca Wu** — classically trained musician, Master of Music, MBA candidate. Working at the intersection of **music, business and data**.
 
-*Portfolio: [add your portfolio URL]* · *LinkedIn: [add your LinkedIn URL]*
+*Portfolio: [reby0318.github.io](https://reby0318.github.io)* · *LinkedIn: [tingyun-wu](https://www.linkedin.com/in/tingyun-wu/)*
 
 ---
 
