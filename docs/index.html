@@ -70,6 +70,8 @@ h1{font-size:clamp(34px,5.4vw,54px); line-height:1.08; letter-spacing:-.028em;
 .btn:hover{border-color:var(--accent); border-bottom-color:var(--accent)}
 .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
 .btn.primary:hover{opacity:.9}
+.btn.pending{color:var(--text-muted); border-style:dashed; cursor:default}
+.btn.pending:hover{border-color:var(--border-strong)}
 
 /* ---------- sections ---------- */
 section{padding:64px 0; border-bottom:1px solid var(--border)}
@@ -164,7 +166,7 @@ footer a{color:var(--text-secondary)}
       working — and that a far better one is available eight weeks after release.</p>
     <div class="cta">
       <a class="btn primary" href="https://github.com/Reby0318/music-market-intelligence/blob/main/paper/Signal-vs-Noise-Paper.md">Read the paper</a>
-      <a class="btn" href="YOUR_TABLEAU_URL">Tableau dashboards</a>
+      <span class="btn pending" title="Dashboards in progress">Tableau dashboards — in progress</span>
       <a class="btn" href="https://github.com/Reby0318/music-market-intelligence">Code &amp; data</a>
     </div>
     <div class="meta">
@@ -702,7 +704,7 @@ footer a{color:var(--text-secondary)}
     <p>
       <a href="https://github.com/Reby0318/music-market-intelligence">Repository</a> ·
       <a href="https://github.com/Reby0318/music-market-intelligence/blob/main/paper/Signal-vs-Noise-Paper.md">Full paper</a> ·
-      <a href="YOUR_TABLEAU_URL">Tableau Public</a>
+      <span>Tableau Public — in progress</span>
     </p>
     <p class="small">Chart data from the public Billboard Hot 100 archive, used for
       non-commercial research. Billboard is a trademark of Billboard Media, LLC, which is
