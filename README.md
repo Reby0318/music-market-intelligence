@@ -39,11 +39,9 @@ Songs still holding near their peak at week eight go on to a 26-week run **48%**
 
 ```
 music-market-intelligence/
-├── paper/          Full research paper (Markdown + Word-ready HTML)
-├── scripts/        3-step Python pipeline (standard library only)
+├── paper/          Full research paper (Markdown, Word, HTML)
+├── scripts/        4-step Python pipeline (standard library only)
 ├── data/           Data dictionary + cleaned, analysis-ready CSVs
-├── tableau/        Step-by-step build guide for 4 dashboards
-├── excel/          Reproduce every finding in Excel alone
 ├── analysis/       Findings summary and full results tables
 └── docs/           Project website (GitHub Pages)
 ```
@@ -108,8 +106,8 @@ Connect Tableau or Excel directly to these files. Full field definitions: **[dat
 | Tool | Role |
 |---|---|
 | **Python 3** (standard library only) | Download, clean, validate, aggregate |
-| **Tableau Public** (free) | Four interactive dashboards — [build guide](tableau/TABLEAU_BUILD_GUIDE.md) |
-| **Microsoft Excel** | Independent reproduction of every finding — [guide](excel/EXCEL_ANALYSIS_GUIDE.md) |
+| **Tableau Public** (free) | Four interactive dashboards |
+| **Microsoft Excel** | Independent reproduction of every finding |
 | **GitHub Pages** (free) | Project website |
 
 Deliberately no paid tools, no cloud warehouse, and no third-party Python packages, so anyone can clone this repository and reproduce every number in it in under five minutes.
